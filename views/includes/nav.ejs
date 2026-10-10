@@ -1,21 +1,68 @@
-<nav>
-        <div class="bg-blue-500 text-white flex justify-around p-4">
-            <h1 class="text-2xl font-bold">Bookstore</h1>
-            <div class="flex gap-8 text-lg font-semibold">
-                <a href="/">Home</a>
-                <a href="/books">Books</a>
-                <a href="/category">Categories</a>
-                <a href="/cart">Cart</a>
-                <a href="/about">About</a>
-                <a href="/contact">Contact</a>
-                <a href="/admin" aria-label="Admin" title="Admin" class="inline-flex items-center" >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"></path>
-                        <circle cx="12" cy="10" r="2.5"></circle>
-                        <path d="M8.5 16c.8-1.5 2-2.2 3.5-2.2s2.7.7 3.5 2.2"></path>
-                    </svg>
-                    <span class="sr-only">Admin</span>
-                </a>
-            </div>
+<nav class="w-full">
+    <div class="w-full bg-blue-500 text-white
+                flex flex-wrap items-center
+                justify-between gap-4
+                px-4 md:px-6 py-4">
+
+        
+        <h1 class="text-2xl font-bold shrink-0">
+            Bookstore
+        </h1>
+
+        
+        <div class="flex flex-1 flex-wrap
+                    items-center justify-center
+                    gap-x-5 gap-y-3
+                    text-base md:text-lg font-semibold">
+
+            <a href="/" class="hover:text-blue-100">
+                Home
+            </a>
+
+            <a href="/books" class="hover:text-blue-100">
+                Books
+            </a>
+
+            <a href="/category" class="hover:text-blue-100">
+                Categories
+            </a>
+
+            <a href="/cart" class="hover:text-blue-100">
+                Cart
+            </a>
+
+            <a href="/about" class="hover:text-blue-100">
+                About
+            </a>
+
+            <a href="/contact" class="hover:text-blue-100">
+                Contact
+            </a>
+
+    
+            <a href="/admin"
+               aria-label="Admin"
+               title="Admin"
+               class="inline-flex items-center hover:text-blue-100">
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="h-6 w-6"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round"
+                     aria-hidden="true">
+
+                    <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"></path>
+
+                    <circle cx="12" cy="10" r="2.5"></circle>
+
+                    <path d="M8.5 16c.8-1.5 2-2.2 3.5-2.2s2.7.7 3.5 2.2"></path>
+                </svg>
+            </a>
+
         </div>
+    </div>
 </nav>
