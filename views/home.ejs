@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookstore | Discover Your Next Read</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: #faf9f6;
+            color: #172f55;
+            font-family: Arial, sans-serif;
+        }
+
+        .hero-bg {
+            background:
+                radial-gradient(circle at 85% 35%, #dbeafe 0, transparent 27%),
+                linear-gradient(120deg, #faf9f6, #f0f5fc);
+        }
+
+        .serif {
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        .category-card {
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(23, 47, 85, .10);
+        }
+
+        .primary-btn {
+            transition: .25s ease;
+        }
+
+        .primary-btn:hover {
+            background: #244f91;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+
+    <%- include('includes/nav.ejs') %>
+
+    <main>
+
+        <section class="hero-bg overflow-hidden">
+            <div class="mx-auto max-w-7xl px-6 py-16 md:py-24">
+                <div class="grid items-center gap-12 md:grid-cols-2">
+
+                    <div>
+                        <span class="inline-block rounded-full bg-blue-100 px-4 py-2 text-xs font-bold uppercase tracking-widest text-blue-800">
+                            Your next great read
+                        </span>
+
+                        <h1 class="serif mt-6 text-5xl font-bold leading-tight text-slate-900 md:text-6xl">
+                            Find stories that
+                            <span class="text-blue-700">stay with you.</span>
+                        </h1>
+
+                        <p class="mt-6 max-w-lg text-lg leading-8 text-slate-600">
+                            Discover books that inspire, educate and entertain.
+                            From bestselling novels to hidden gems, find your
+                            next favourite book right here.
+                        </p>
+
+                        <div class="mt-8 flex flex-wrap gap-4">
+                            <a href="/books"
+                               class="primary-btn rounded-full bg-blue-700 px-7 py-3.5 font-semibold text-white shadow-lg shadow-blue-200">
+                                Explore Books →
+                            </a>
+
+                            <a href="/about"
+                               class="rounded-full border border-slate-300 bg-white px-7 py-3.5 font-semibold text-slate-800 transition hover:bg-slate-100">
+                                Our Story
+                            </a>
+                        </div>
+
+                        <div class="mt-8 flex flex-wrap gap-6 text-sm text-slate-600">
+                            <span>✓ Carefully selected books</span>
+                            <span>✓ Great prices</span>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="absolute inset-5 rounded-full bg-blue-200 opacity-60 blur-3xl"></div>
+
+                        <img
+                            src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1100&q=85"
+                            alt="Beautiful collection of books"
+                            class="relative h-80 w-full rounded-3xl object-cover shadow-2xl md:h-[440px]"
+                        >
+
+                        <div class="absolute bottom-5 left-5 rounded-2xl bg-white/95 p-4 shadow-lg md:bottom-8 md:left-8">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">
+                                A world of imagination
+                            </p>
+                            <p class="serif mt-1 text-xl font-bold text-slate-900">
+                                One book at a time.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="border-y border-blue-100 bg-blue-50">
+            <div class="mx-auto grid max-w-7xl gap-6 px-6 py-8 sm:grid-cols-2 md:grid-cols-3">
+
+                <div class="flex items-center gap-4">
+                    <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white text-3xl">
+                        📚
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900">Curated Books</h3>
+                        <p class="mt-1 text-sm text-slate-600">
+                            Handpicked titles for every mood.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white text-3xl">
+                        🏷️
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900">Great Prices</h3>
+                        <p class="mt-1 text-sm text-slate-600">
+                            More books, less spending.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white text-3xl">
+                        🚚
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900">Fast Delivery</h3>
+                        <p class="mt-1 text-sm text-slate-600">
+                            Get your books delivered to you.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="py-20">
+            <div class="mx-auto max-w-7xl px-6">
+
+                <div class="mb-10 text-center">
+                    <p class="text-sm font-bold uppercase tracking-widest text-blue-700">
+                        Find your interest
+                    </p>
+
+                    <h2 class="serif mt-3 text-3xl font-bold text-slate-900 md:text-4xl">
+                        Explore by Category
+                    </h2>
+
+                    <p class="mx-auto mt-3 max-w-xl text-slate-600">
+                        Whatever you love to read, there is something here for you.
+                    </p>
+                </div>
+
+                <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+
+                    <a href="/books"
+                       class="category-card flex items-center gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                        <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-3xl">
+                            📖
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-slate-900">Fiction</h3>
+                            <p class="mt-1 text-sm text-slate-500">
+                                Stories and adventures
+                            </p>
+                        </div>
+                        <span class="text-xl text-blue-700">→</span>
+                    </a>
+
+                    <a href="/books"
+                       class="category-card flex items-center gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                        <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-green-50 text-3xl">
+                            🌱
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-slate-900">Self Growth</h3>
+                            <p class="mt-1 text-sm text-slate-500">
+                                Learn and improve
+                            </p>
+                        </div>
+                        <span class="text-xl text-blue-700">→</span>
+                    </a>
+
+                    <a href="/books"
+                       class="category-card flex items-center gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                        <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-3xl">
+                            💼
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-slate-900">Business</h3>
+                            <p class="mt-1 text-sm text-slate-500">
+                                Ideas and leadership
+                            </p>
+                        </div>
+                        <span class="text-xl text-blue-700">→</span>
+                    </a>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white py-20">
+            <div class="mx-auto max-w-7xl px-6">
+
+                <div class="mb-12 text-center">
+                    <p class="text-sm font-bold uppercase tracking-widest text-blue-700">
+                        More than just books
+                    </p>
+
+                    <h2 class="serif mt-3 text-3xl font-bold text-slate-900 md:text-4xl">
+                        A better way to read
+                    </h2>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-3">
+
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-8">
+                        <div class="text-3xl">✨</div>
+                        <h3 class="mt-5 text-xl font-bold text-slate-900">
+                            Quality Selection
+                        </h3>
+                        <p class="mt-3 leading-7 text-slate-600">
+                            Discover books selected to inspire curiosity
+                            and make every reading moment worthwhile.
+                        </p>
+                    </div>
+
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-8">
+                        <div class="text-3xl">💙</div>
+                        <h3 class="mt-5 text-xl font-bold text-slate-900">
+                            Reader First
+                        </h3>
+                        <p class="mt-3 leading-7 text-slate-600">
+                            Explore different genres and find books
+                            that match your interests.
+                        </p>
+                    </div>
+
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-8">
+                        <div class="text-3xl">📦</div>
+                        <h3 class="mt-5 text-xl font-bold text-slate-900">
+                            Easy Shopping
+                        </h3>
+                        <p class="mt-3 leading-7 text-slate-600">
+                            Browse our collection and explore your
+                            next read with ease.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="px-6 py-16">
+            <div class="mx-auto max-w-5xl rounded-3xl bg-gradient-to-r from-blue-950 to-blue-700 px-6 py-12 text-center shadow-xl md:px-12 md:py-16">
+
+                <p class="text-sm font-bold uppercase tracking-widest text-blue-200">
+                    Your next chapter starts here
+                </p>
+
+                <h2 class="serif mt-4 text-3xl font-bold text-white md:text-4xl">
+                    Ready to find your next favourite book?
+                </h2>
+
+                <p class="mx-auto mt-4 max-w-2xl leading-7 text-blue-100">
+                    Explore our collection and discover a story
+                    you will want to read again and again.
+                </p>
+
+                <a href="/books"
+                   class="primary-btn mt-8 inline-block rounded-full bg-white px-8 py-3.5 font-bold text-blue-900">
+                    Browse All Books →
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <%- include('includes/footer.ejs') %>
+
+</body>
+</html>

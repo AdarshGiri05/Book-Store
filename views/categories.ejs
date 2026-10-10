@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <%- include('includes/nav.ejs') %>
+
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <div class="mb-8 text-center">
+            <h1 class="text-4xl font-bold text-gray-900">Categories</h1>
+            <p class="mt-2 text-gray-600">Explore your favorite books by category</p>
+        </div>
+
+        <%
+            const selectedCategory = typeof category !== 'undefined' ? category : 'All';
+            const categoryLinks = ['All', 'Self learning', 'Fantasy'];
+        %>
+
+        <div class="mb-8 flex flex-wrap gap-3 justify-center">
+            <% categoryLinks.forEach(cat => { %>
+                <% const href = cat === 'All' ? '/category' : `/category/${encodeURIComponent(cat)}`; %>
+                <a href="<%= href %>"
+                   class="px-4 py-2 rounded-full border text-sm font-medium transition <%= selectedCategory === cat ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600' %>">
+                    <%= cat %>
+                </a>
+            <% }) %>
+        </div>
+
+        <% if (books && books.length) { %>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <% books.forEach(book => { %>
+                    <div class="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden flex items-center p-4 gap-4">
+                        <img src="<%= /^https?:\/\//i.test(String(book.image || '')) ? book.image : '/' + String(book.image || '').replace(/^\/+/, '') %>"
+                             alt="<%= book.name || book.title || 'Book image' %>"
+                             class="w-28 h-36 object-cover rounded-xl border border-gray-200 bg-gray-50">
+
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-semibold uppercase tracking-wide text-blue-600 mb-1">
+                                <%= book.category || 'General' %>
+                            </p>
+                            <h2 class="text-2xl font-bold text-gray-900 mb-2"><%= book.name %></h2>
+                            <p class="text-lg font-semibold text-gray-800 mb-1">Price: ₹<%= book.price %></p>
+                            <p class="text-sm text-gray-600">Category: <%= book.category %></p>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="bg-white rounded-xl shadow-sm border border-dashed border-gray-300 p-8 text-center text-gray-600">
+                No books found in this category.
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>

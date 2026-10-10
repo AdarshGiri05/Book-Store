@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= book.name || book.title %></title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <%- include('includes/nav.ejs') %>
+
+    <main class="max-w-6xl mx-auto px-4 py-10">
+        <% if (typeof success !== 'undefined' && success) { %>
+            <div class="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-700 font-medium">
+                Book approved and sent successfully.
+            </div>
+        <% } %>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700 font-medium">
+                Something went wrong while sending the book.
+            </div>
+        <% } %>
+
+        <div class="bg-white rounded-3xl shadow-lg border border-gray-200 overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                <div class="bg-gray-50 p-8 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-gray-200">
+                    <img src="<%= /^https?:\/\//i.test(String(book.image || '')) ? book.image : '/' + String(book.image || '').replace(/^\/+/, '') %>" alt="<%= book.name || book.title || 'Book image' %>" class="max-h-[420px] object-contain rounded-2xl shadow-md">
+                </div>
+
+                <div class="p-8 md:p-10 flex flex-col justify-center">
+                    <span class="inline-block w-fit bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+                        <%= book.category %>
+                    </span>
+
+                    <h1 class="text-4xl font-bold text-gray-900 mb-4"><%= book.name || book.title %></h1>
+
+                    <div class="text-3xl font-bold text-indigo-600 mb-6">₹<%= book.price %></div>
+
+                    <div class="space-y-3 text-gray-700 text-lg">
+                        <p><strong>Author:</strong> <%= book.author || 'Unknown Author' %></p>
+                        <p><strong>Title:</strong> <%= book.title || book.name %></p>
+                        <p><strong>Category:</strong> <%= book.category %></p>
+                    </div>
+
+                    <div class="mt-8 flex flex-col sm:flex-row gap-3">
+                        <a href="/books/add-to-cart/<%= book._id %>" class="flex-1 text-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-5 rounded-lg transition">
+                            Add to Cart
+                        </a>
+                        <a href="/books/edit/<%= book._id %>" class="flex-1 text-center border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white font-semibold py-3 px-5 rounded-lg transition">
+                            Edit Book
+                        </a>
+                    </div>
+
+                    <form action="/books/accept/<%= book._id %>" method="POST" class="mt-8 border-t border-gray-200 pt-6">
+                        <label for="customerEmail" class="block text-sm font-semibold text-gray-700 mb-2">Customer Email</label>
+                        <input
+                            id="customerEmail"
+                            type="email"
+                            name="customerEmail"
+                            placeholder="customer@example.com"
+                            required
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        >
+
+                        <button type="submit" class="mt-4 w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-5 rounded-lg transition">
+                            Accept & Send to Customer
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <%- include('includes/footer.ejs') %>
+</body>
+</html>

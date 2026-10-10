@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Book Store</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <%- include('includes/nav.ejs') %>
+
+    
+    <section class="bg-gradient-to-r from-indigo-600 to-blue-500 text-white">
+        <div class="max-w-7xl mx-auto px-6 py-14">
+
+            <div class="max-w-2xl">
+                <p class="uppercase tracking-widest text-sm font-semibold mb-3">
+                    Welcome to Bookstore
+                </p>
+
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                    Find Your Next Favourite Book
+                </h1>
+
+                <p class="text-lg text-blue-100">
+                    Explore our collection of books and discover something
+                    new to read, learn and enjoy.
+                </p>
+            </div>
+
+        </div>
+    </section>
+    <main class="max-w-7xl mx-auto px-5 py-10">
+
+        <div class="mb-8">
+            <p class="text-indigo-600 font-semibold uppercase tracking-wide text-sm">
+                Our Collection
+            </p>
+
+            <h2 class="text-3xl font-bold text-gray-900 mt-1">
+                Explore Books
+            </h2>
+
+            <p class="text-gray-500 mt-2">
+                Choose from our collection of amazing books.
+            </p>
+        </div>
+
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7">
+
+            <% books.forEach(book => { %>
+
+                <div class="bg-white rounded-2xl overflow-hidden
+                            border border-gray-200
+                            shadow-sm hover:shadow-xl
+                            transition duration-300
+                            hover:-translate-y-1">
+
+                
+                    <a href="/books/edit/<%= book._id %>" class="block">
+
+                        <div class="h-80 bg-gray-100 flex items-center justify-center p-3">
+
+                            <img
+                                src="<%= /^https?:\/\//i.test(String(book.image || '')) ? book.image : '/' + String(book.image || '').replace(/^\/+/, '') %>"
+                                alt="<%= book.name || book.title || 'Book image' %>"
+                                class="h-full w-auto max-w-full object-contain
+                                       transition duration-300
+                                       hover:scale-105"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                            >
+
+                            
+                            <div class="hidden h-full w-full items-center justify-center
+                                        text-gray-500 text-sm text-center">
+                                Book image not found
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                    
+                    <div class="p-5">
+
+                        <span class="inline-block bg-indigo-50
+                                     text-indigo-600 text-xs font-semibold
+                                     px-3 py-1 rounded-full mb-3">
+                            <%= book.category || 'General' %>
+                        </span>
+
+                        <h2 class="text-xl font-bold text-gray-900 mb-2 line-clamp-1">
+                            <%= book.name || book.title || 'Untitled Book' %>
+                        </h2>
+
+                        <div class="flex items-center justify-between mb-5">
+
+                            <div>
+                                <p class="text-xs text-gray-500">Price</p>
+
+                                <p class="text-2xl font-bold text-indigo-600">
+                                    ₹<%= book.price ?? 0 %>
+                                </p>
+                            </div>
+
+                            <div class="text-yellow-500 text-lg">
+                                ★★★★★
+                            </div>
+
+                        </div>
+
+                        
+                        <div class="grid grid-cols-2 gap-3">
+
+                            <a href="/books/edit/<%= book._id %>"
+                               class="text-center border border-indigo-600
+                                      text-indigo-600 hover:bg-indigo-600
+                                      hover:text-white font-semibold
+                                      py-2.5 rounded-lg transition">
+                                Edit
+                            </a>
+
+                            <a href="/books/add-to-cart/<%= book._id %>"
+                               class="text-center bg-indigo-600
+                                      hover:bg-indigo-700 text-white
+                                      font-semibold py-2.5 rounded-lg transition">
+                                Add to Cart
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            <% }) %>
+
+            <% if (books.length === 0) { %>
+                <p class="text-gray-500 col-span-full text-center py-10">
+                    No books available yet.
+                </p>
+            <% } %>
+
+        </div>
+
+    </main>
+
+    <%- include('includes/footer.ejs') %>
+
+</body>
+</html>

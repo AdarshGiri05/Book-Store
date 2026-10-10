@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Bookstore</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+    <%- include('includes/nav.ejs') %>
+    <main class="mx-auto my-16 max-w-md rounded-2xl bg-white p-8 shadow-lg">
+        <h1 class="mb-6 text-3xl font-bold text-slate-900">Admin Login</h1>
+        <% if (error) { %>
+            <p class="mb-4 rounded-lg bg-red-50 p-3 text-red-700" role="alert"><%= error %></p>
+        <% } %>
+        <form action="/admin/login" method="POST" autocomplete="off" class="space-y-5">
+            <div>
+                <label for="username" class="mb-2 block font-semibold text-slate-700">Username</label>
+                <input id="username" type="text" name="username" autocomplete="off" readonly required
+                       class="w-full rounded-lg border border-slate-300 px-4 py-3">
+            </div>
+            <div>
+                <label for="password" class="mb-2 block font-semibold text-slate-700">Password</label>
+                <input id="password" type="password" name="password" autocomplete="new-password" readonly required
+                       class="w-full rounded-lg border border-slate-300 px-4 py-3">
+            </div>
+            <button type="submit" class="w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700">
+                Login
+            </button>
+        </form>
+    </main>
+    <%-include('includes/footer.ejs')  %>
+    <script>
+        document.querySelectorAll('#username, #password').forEach((input) => {
+            input.addEventListener('focus', () => input.removeAttribute('readonly'), { once: true });
+        });
+    </script>
+</body>
+</html>
