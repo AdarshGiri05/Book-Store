@@ -3,57 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories</title>
+
+    <title>Explore Categories | Bookstore</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="bg-gray-100 text-gray-800">
+
+<body class="bg-[#F8F7F3] text-slate-800">
+
     <%- include('includes/nav.ejs') %>
 
-    <div class="max-w-6xl mx-auto px-4 py-8">
-        <div class="mb-8 text-center">
-            <h1 class="text-4xl font-bold text-gray-900">Categories</h1>
-            <p class="mt-2 text-gray-600">Explore your favorite books by category</p>
-        </div>
+    <main class="max-w-7xl mx-auto px-5 py-10 md:py-14">
 
         <%
-            const selectedCategory = typeof category !== 'undefined' ? category : 'All';
-            const categoryLinks = ['All', 'Self learning', 'Fantasy'];
+            const selectedCategory =
+                typeof category !== 'undefined' ? category : 'All';
+
+            const categoryLinks = [
+                'All',
+                'Self learning',
+                'Fantasy',
+                'Historical Fiction',
+                'Finance',
+            ];
         %>
 
-        <div class="mb-8 flex flex-wrap gap-3 justify-center">
-            <% categoryLinks.forEach(cat => { %>
-                <% const href = cat === 'All' ? '/category' : `/category/${encodeURIComponent(cat)}`; %>
-                <a href="<%= href %>"
-                   class="px-4 py-2 rounded-full border text-sm font-medium transition <%= selectedCategory === cat ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600' %>">
-                    <%= cat %>
-                </a>
-            <% }) %>
-        </div>
+       
+        <section class="mb-10">
 
-        <% if (books && books.length) { %>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <% books.forEach(book => { %>
-                    <div class="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden flex items-center p-4 gap-4">
-                        <img src="<%= /^https?:\/\//i.test(String(book.image || '')) ? book.image : '/' + String(book.image || '').replace(/^\/+/, '') %>"
-                             alt="<%= book.name || book.title || 'Book image' %>"
-                             class="w-28 h-36 object-cover rounded-xl border border-gray-200 bg-gray-50">
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
 
-                        <div class="flex-1 min-w-0">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-blue-600 mb-1">
-                                <%= book.category || 'General' %>
-                            </p>
-                            <h2 class="text-2xl font-bold text-gray-900 mb-2"><%= book.name %></h2>
-                            <p class="text-lg font-semibold text-gray-800 mb-1">Price: ₹<%= book.price %></p>
-                            <p class="text-sm text-gray-600">Category: <%= book.category %></p>
-                        </div>
-                    </div>
+                <div>
+                    <p class="text-xs uppercase tracking-[0.2em] font-bold text-[#244f91] mb-2">
+                        Browse your interests
+                    </p>
+
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">
+                        Explore Categories
+                    </h2>
+                </div>
+
+                <p class="text-sm text-slate-500">
+                    Choose what you feel like reading.
+                </p>
+
+            </div>
+
+            
+            <div class="flex flex-wrap gap-3">
+
+                <% categoryLinks.forEach(cat => { %>
+
+                    <% const href = cat === 'All'
+                        ? '/category'
+                        : `/category/${encodeURIComponent(cat)}`; %>
+
+                    <a href="<%= href %>"
+                       class="px-5 py-3 rounded-xl text-sm font-semibold transition border
+                       <%= String(selectedCategory).toLowerCase() === cat.toLowerCase()
+                           ? 'bg-[#2458d3] text-white border-[#2458d3] shadow-md'
+                           : 'bg-white text-slate-700 border-stone-200 hover:bg-[#2458d3] hover:text-white hover:border-[#2458d3]' %>">
+
+                        <%= cat %>
+
+                    </a>
+
                 <% }) %>
+
             </div>
-        <% } else { %>
-            <div class="bg-white rounded-xl shadow-sm border border-dashed border-gray-300 p-8 text-center text-gray-600">
-                No books found in this category.
+
+        </section>
+
+     
+        <section>
+
+            <div class="flex items-center justify-between gap-3 mb-6">
+
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">
+                        <%= selectedCategory === 'All' ? 'The Reading Shelf' : selectedCategory %>
+                    </h2>
+
+                    <p class="text-sm text-slate-500 mt-1">
+                        A little inspiration for your next read.
+                    </p>
+                </div>
+
+                <span class="shrink-0 rounded-full bg-[#E8E6DD] px-4 py-2 text-sm font-semibold text-slate-700">
+                    <%= books ? books.length : 0 %> books
+                </span>
+
             </div>
-        <% } %>
-    </div>
+
+            <% if (books && books.length > 0) { %>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+
+                    <% books.forEach((book, index) => { %>
+
+                        <article class="group relative bg-white rounded-2xl p-3 sm:p-4 border border-stone-200 hover:-translate-y-1 hover:shadow-xl transition duration-300">
+
+                         
+                            <div class="relative flex items-center justify-center h-52 sm:h-64 rounded-xl overflow-hidden bg-[#F1EFE8]">
+
+                                <span class="absolute top-3 left-3 z-10 text-xs font-bold text-slate-500 bg-white/90 rounded-full px-2.5 py-1">
+                                    <%= String(index + 1).padStart(2, '0') %>
+                                </span>
+
+                                <img
+                                    src="<%= /^https?:\/\//i.test(String(book.image || '')) ? book.image : '/' + String(book.image || '').replace(/^\/+/, '') %>"
+                                    alt="<%= book.name || book.title || 'Book cover' %>"
+                                    class="w-full h-full object-contain p-3 group-hover:scale-105 transition duration-300"
+                                    loading="lazy">
+
+                            </div>
+
+                           
+                            <div class="pt-4 pb-1">
+
+                                <p class="text-[10px] sm:text-xs uppercase tracking-wider font-bold text-[#244f91] mb-2">
+                                    <%= book.category || 'General' %>
+                                </p>
+
+                                <h3 class="text-sm sm:text-base font-bold text-slate-900 leading-snug line-clamp-2 min-h-10">
+                                    <%= book.name || book.title || 'Untitled Book' %>
+                                </h3>
+
+                            </div>
+
+                        </article>
+
+                    <% }) %>
+
+                </div>
+
+            <% } else { %>
+
+               
+                <div class="rounded-3xl bg-white border border-stone-200 p-10 text-center">
+
+                    <div class="text-5xl mb-4">📚</div>
+
+                    <h3 class="text-2xl font-bold text-slate-900">
+                        No books found
+                    </h3>
+
+                    <p class="text-slate-500 mt-2">
+                        Try choosing another category.
+                    </p>
+
+                    <a href="/category"
+                       class="inline-block mt-6 rounded-full bg-[#244f91] text-white px-6 py-3 font-semibold hover:bg-[#1c3e73] transition">
+
+                        Browse all categories
+
+                    </a>
+
+                </div>
+
+            <% } %>
+
+        </section>
+
+        
+        <section class="mt-14 border-t border-stone-200 pt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+
+            <div>
+                <p class="text-xl font-bold text-slate-900">
+                    Keep turning pages.
+                </p>
+
+                <p class="text-sm text-slate-500 mt-1">
+                    Your next favourite book might be closer than you think.
+                </p>
+            </div>
+
+            <a href="/books"
+               class="inline-flex items-center justify-center gap-2 rounded-full bg-[#244f91] text-white border border-[#244f91] px-6 py-3 font-semibold hover:bg-[#1c3e73] hover:border-[#1c3e73] transition">
+
+                View book collection <span>→</span>
+
+            </a>
+
+        </section>
+
+    </main>
+
+    <%- include('includes/footer.ejs') %>
+
 </body>
 </html>

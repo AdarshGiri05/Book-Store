@@ -1,4 +1,30 @@
 <nav class="w-full">
+    <style>
+        .nav-link {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        .nav-link::after {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            background: currentColor;
+            content: "";
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .2s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link:focus-visible::after,
+        .nav-link.is-active::after {
+            transform: scaleX(1);
+        }
+    </style>
     <div class="w-full bg-blue-500 text-white
                 flex flex-wrap items-center
                 justify-between gap-4
@@ -15,29 +41,29 @@
                     gap-x-5 gap-y-3
                     text-base md:text-lg font-semibold">
 
-            <a href="/" class="hover:text-blue-100">
-                Home
-            </a>
+                    <a href="/" class="nav-link hover:text-blue-100">
+                        Home
+                    </a>
 
-            <a href="/books" class="hover:text-blue-100">
-                Books
-            </a>
+                    <a href="/books" class="nav-link hover:text-blue-100">
+                        Books
+                    </a>
 
-            <a href="/category" class="hover:text-blue-100">
-                Categories
-            </a>
+                    <a href="/category" class="nav-link hover:text-blue-100">
+                        Categories
+                    </a>
 
-            <a href="/cart" class="hover:text-blue-100">
-                Cart
-            </a>
+                    <a href="/cart" class="nav-link hover:text-blue-100">
+                        Cart
+                    </a>
 
-            <a href="/about" class="hover:text-blue-100">
-                About
-            </a>
+                    <a href="/about" class="nav-link hover:text-blue-100">
+                        About
+                    </a>
 
-            <a href="/contact" class="hover:text-blue-100">
-                Contact
-            </a>
+                    <a href="/contact" class="nav-link hover:text-blue-100">
+                        Contact
+                    </a>
 
     
             <a href="/admin"
@@ -65,4 +91,21 @@
 
         </div>
     </div>
+    <script>
+        (() => {
+            const links = document.querySelectorAll('nav .nav-link');
+            const selectedHref = sessionStorage.getItem('selectedNavLinkV2');
+
+            links.forEach((link) => {
+                if (link.getAttribute('href') === selectedHref) {
+                    link.classList.add('is-active');
+                    link.setAttribute('aria-current', 'page');
+                }
+
+                link.addEventListener('click', () => {
+                    sessionStorage.setItem('selectedNavLinkV2', link.getAttribute('href'));
+                });
+            });
+        })();
+    </script>
 </nav>

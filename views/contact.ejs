@@ -3,54 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact</title>
+    <title>Contact Us | Bookstore</title>
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fc;
+            color: #1e293b;
+        }
+
+        .contact-hero {
+            background: linear-gradient(120deg, #2458d3, #3730a3 58%, #6d28d9);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-hero::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            right: -60px;
+            top: -100px;
+            border: 40px solid rgba(255,255,255,.08);
+            border-radius: 50%;
+        }
+
+        .contact-hero::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            left: -80px;
+            bottom: -110px;
+            background: rgba(255,255,255,.07);
+            border-radius: 50%;
+        }
+
+        .contact-input {
+            width: 100%;
+            border: 1px solid #dbe2ee;
+            background: #f8faff;
+            border-radius: 10px;
+            padding: 10px 12px;
+            outline: none;
+            transition: border-color .2s, box-shadow .2s, background .2s;
+            font-size: 14px;
+            color: #1e293b;
+        }
+
+        .contact-input:focus {
+            border-color: #6366f1;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(99,102,241,.12);
+        }
+
+        .contact-input::placeholder {
+            color: #94a3b8;
+        }
+
+        .contact-card {
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(30,41,59,.07);
+        }
+    </style>
 </head>
 
-<body style="background: #f2f2f2; margin: 0; font-family: Arial, sans-serif;">
+<body>
 
     <%- include('includes/nav.ejs') %>
 
-    <main style="margin-left: 30px; margin-top: 18px; margin-bottom: 30px;">
-        <h1 style="font-size: 30px; font-weight: 700; margin: 0 0 30px;">Contact Page</h1>
+    <main>
 
-        <% if (success) { %>
-            <div style="margin: 0 auto 18px auto; padding: 8px 12px; background: #e6f9ee; border: 1px solid #2eaa5a; color: #146b3b; border-radius: 6px; width: 420px; max-width: 90vw; font-size: 18px; text-align: center; box-sizing: border-box;">
-                Message sent successfully.
+        <section class="contact-hero text-white">
+            <div class="relative z-10 max-w-7xl mx-auto px-5 py-14 md:py-20 text-center">
+
+              
+
+                <h1 class="mt-4 text-4xl md:text-6xl font-bold tracking-tight">
+                    Let's Talk Books
+                </h1>
+
+                <p class="mt-5 mx-auto max-w-2xl text-base md:text-lg leading-8 text-indigo-100">
+                    Have a question, need help finding a book, or just want to
+                    share your thoughts? Send us a message. We're happy to help.
+                </p>
+
+              
+
             </div>
-        <% } %>
+        </section>
 
-        <form action="/contact" method="POST" style="display: inline-block;">
+        <section class="max-w-4xl mx-auto px-5 py-8 md:py-10">
 
-            <div style="display: flex; align-items: center; margin-bottom: 14px;">
-                <label style="display: inline-block; width: 180px; font-size: 22px; margin-right: 16px;">Name</label>
-                <input type="text" name="name" required
-                       style="width: 520px; max-width: 90vw; border: 1px solid black; height: 32px; background: white; padding: 0 8px; box-sizing: border-box;">
+            <% if (success) { %>
+                <div class="mb-7 max-w-4xl mx-auto rounded-xl border border-green-200 bg-green-50 p-4 text-center text-green-800">
+                    <p class="font-bold">Message sent successfully!</p>
+                    <p class="mt-1 text-sm">
+                        Thank you for reaching out. We appreciate your message.
+                    </p>
+                </div>
+            <% } %>
+
+
+                   
+                    </div>
+
+                </div>
+
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 md:p-7 shadow-lg shadow-slate-200/50">
+
+                    <div class="mb-5">
+                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">
+                            Send Us a Message
+                        </h2>
+
+                        <p class="mt-2 text-sm leading-6 text-slate-500">
+                            Fill in the details below and tell us how we can help.
+                        </p>
+                    </div>
+
+                    <form action="/contact" method="POST" class="space-y-4">
+
+                        <div>
+                            <label for="name" class="mb-2 block text-sm font-semibold text-slate-700">
+                                Your Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="Enter your full name"
+                                autocomplete="name"
+                                required
+                                class="contact-input">
+                        </div>
+
+                        <div>
+                            <label for="email" class="mb-2 block text-sm font-semibold text-slate-700">
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                required
+                                class="contact-input">
+                        </div>
+
+                        <div>
+                            <label for="mob" class="mb-2 block text-sm font-semibold text-slate-700">
+                                Mobile Number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="mob"
+                                name="mob"
+                                placeholder="Enter your mobile number"
+                                autocomplete="tel"
+                                required
+                                class="contact-input">
+                        </div>
+
+                        <div>
+                            <label for="message" class="mb-2 block text-sm font-semibold text-slate-700">
+                                Your Message
+                            </label>
+
+                            <textarea
+                                id="message"
+                                name="message"
+                                rows="4"
+                                placeholder="Write your message here..."
+                                required
+                                class="contact-input resize-y"></textarea>
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="mx-auto flex w-fit items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-indigo-700 to-purple-700 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-indigo-200 transition hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-indigo-200">
+
+                            Send Message
+                            <span>→</span>
+
+                        </button>
+
+                       
+
+                    </form>
+
+                </div>
+
             </div>
 
-            <div style="display: flex; align-items: center; margin-bottom: 14px;">
-                <label style="display: inline-block; width: 180px; font-size: 22px; margin-right: 16px;">Email</label>
-                <input type="email" name="email" required
-                       style="width: 520px; max-width: 90vw; border: 1px solid black; height: 32px; background: white; padding: 0 8px; box-sizing: border-box;">
-            </div>
+        </section>
 
-            <div style="display: flex; align-items: center; margin-bottom: 14px;">
-                <label style="display: inline-block; width: 180px; font-size: 22px; margin-right: 16px;">Mobile Number</label>
-                <input type="text" name="mob" required
-                       style="width: 520px; max-width: 90vw; border: 1px solid black; height: 32px; background: white; padding: 0 8px; box-sizing: border-box;">
-            </div>
-
-            <div style="display: flex; align-items: flex-start; margin-bottom: 18px;">
-                <label style="display: inline-block; width: 180px; font-size: 22px; margin-right: 16px; margin-top: 6px;">Message</label>
-                <textarea name="message" required rows="4"
-                          style="width: 520px; max-width: 90vw; border: 1px solid black; background: white; padding: 8px; box-sizing: border-box; resize: vertical;"></textarea>
-            </div>
-
-            <button type="submit"
-                    style="border: 1px solid black; background: #f5f5f5; padding: 8px 18px; font-size: 18px; cursor: pointer;">
-                Send
-            </button>
-        </form>
     </main>
 
     <%- include('includes/footer.ejs') %>

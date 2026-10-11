@@ -305,5 +305,3 @@ app.post('/books/delete/:id', async (req, res) => {
     await Book.findByIdAndDelete(bookId);
     res.redirect('/books');
 });
-
-
