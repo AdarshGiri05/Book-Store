@@ -5,6 +5,8 @@ const fs = require('fs');
 const express = require('express');
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
+const ADMIN_USERNAME = "admin";
+const ADMIN_PASSWORD = "1234";
 
 const mongoose = require('mongoose');
 const nodemailer = require('nodemailer');
@@ -83,6 +85,12 @@ app.post('/admin/login', (req, res) => {
     if (!username || !password?.trim()) {
         return res.status(400).render('adminlogin', {
             error: 'Please enter both username and password.'
+        });
+    }
+
+    if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
+        return res.status(401).render('adminlogin', {
+            error: 'Invalid username or password.'
         });
     }
 
