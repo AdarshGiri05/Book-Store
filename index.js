@@ -4,6 +4,7 @@ const path = require("path");
 const fs = require('fs');
 const express = require('express');
 const app = express();
+app.set('trust proxy', 1);
 const PORT = Number(process.env.PORT) || 3000;
 const ADMIN_USERNAME = "admin";
 const ADMIN_PASSWORD = "1234";
