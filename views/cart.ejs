@@ -92,9 +92,16 @@
                                     <%= item.name || item.title %>
                                 </h2>
 
-                                <p class="text-sm text-gray-500 mt-2">
-                                    Quantity: <%= item.quantity %>
-                                </p>
+                                <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-white w-fit mt-2">
+                                    <a href="/cart/decrease/<%= item._id %>"
+                                       aria-label="Decrease quantity of <%= item.name || item.title %>"
+                                       class="cart-btn px-3 py-1 text-lg font-semibold text-gray-700 hover:bg-gray-100">−</a>
+                                    <span class="min-w-10 text-center text-gray-800 font-semibold"
+                                          aria-label="Quantity"><%= item.quantity %></span>
+                                    <a href="/cart/increase/<%= item._id %>"
+                                       aria-label="Increase quantity of <%= item.name || item.title %>"
+                                       class="cart-btn px-3 py-1 text-lg font-semibold text-gray-700 hover:bg-gray-100">+</a>
+                                </div>
 
                                 <p class="text-sm font-semibold text-[#52796f] mt-1">
                                     ₹<%= item.price %> each

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a Book | Bookstore</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <%- include('includes/nav.ejs') %>
+
+    <main class="max-w-3xl mx-auto px-4 py-10">
+        <div class="bg-white shadow-lg rounded-2xl p-6 border border-gray-200">
+            <h1 class="text-3xl font-bold mb-6">Add a Book</h1>
+
+            <% if (error) { %>
+                <p role="alert" class="mb-5 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+                    <%= error %>
+                </p>
+            <% } %>
+
+            <form action="/books/add" method="POST" enctype="multipart/form-data" class="space-y-5">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Book Name</label>
+                    <input type="text" id="name" name="name" value="<%= formData.name || '' %>" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                </div>
+
+                <div>
+                    <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                    <input type="text" id="title" name="title" value="<%= formData.title || formData.name || '' %>" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                </div>
+
+                <div>
+                    <label for="author" class="block text-sm font-medium text-gray-700 mb-1">Author</label>
+                    <input type="text" id="author" name="author" value="<%= formData.author || '' %>" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                </div>
+
+                <div>
+                    <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Price</label>
+                    <input type="number" id="price" name="price" value="<%= formData.price || '' %>" min="0" step="0.01" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                </div>
+
+                <div>
+                    <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <input type="text" id="category" name="category" value="<%= formData.category || '' %>" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                </div>
+
+                <div>
+                    <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image URL (optional)</label>
+                    <input type="text" id="image" name="image" value="<%= formData.image || '' %>" placeholder="https://example.com/image.jpg or uploads/your-image.jpg" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+
+                <div>
+                    <label for="imageFile" class="block text-sm font-medium text-gray-700 mb-1">Or choose an image file (optional)</label>
+                    <input type="file" id="imageFile" name="imageFile" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" class="w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-indigo-50 file:px-4 file:py-2 file:font-semibold file:text-indigo-700 hover:file:bg-indigo-100">
+                    <p class="mt-1 text-xs text-gray-500">JPG, PNG, or WEBP; maximum 5 MB.</p>
+                </div>
+
+                <div class="flex gap-3 pt-4">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-5 rounded-lg transition">Add Book</button>
+                    <a href="/books" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-5 rounded-lg transition">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <%- include('includes/footer.ejs') %>
+</body>
+</html>

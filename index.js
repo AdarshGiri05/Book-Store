@@ -205,7 +205,7 @@ app.get('/books/add-to-cart/:id', async (req, res) => {
     }
 
     app.locals.cart = cartItems;
-    res.redirect('/cart');
+    res.redirect(req.query.action === 'add' ? '/books' : '/cart');
 });
 
 app.get('/cart', (req, res) => {
@@ -244,13 +244,52 @@ app.get('/cart/decrease/:id', (req, res) => {
 
     if (item.quantity > 1) {
         item.quantity -= 1;
-    } else {
-        app.locals.cart = cartItems.filter(book => book._id.toString() !== req.params.id);
-        return res.redirect('/cart');
     }
 
     app.locals.cart = cartItems;
     res.redirect('/cart');
+});
+
+app.get('/books/add', requireAdmin, (req, res) => {
+    res.render('addbook', {
+        error: null,
+        formData: {}
+    });
+});
+
+app.post('/books/add', requireAdmin, upload.single('imageFile'), async (req, res) => {
+    const formData = req.body || {};
+    const name = String(formData.name || formData.title || '').trim();
+    const title = String(formData.title || formData.name || '').trim();
+    const author = String(formData.author || '').trim();
+    const category = String(formData.category || '').trim();
+    const price = Number(formData.price);
+
+    if (!name || !title || !author || !category || formData.price === '' ||
+        !Number.isFinite(price) || price < 0) {
+        return res.status(400).render('addbook', {
+            error: 'Enter the book name, title, author, category, and a valid non-negative price.',
+            formData
+        });
+    }
+
+    const bookData = { name, title, author, price, category };
+    if (req.file) {
+        bookData.image = `uploads/${req.file.filename}`;
+    } else if (typeof formData.image === 'string' && formData.image.trim()) {
+        bookData.image = formData.image.trim().replace(/^\/+/, '');
+    }
+
+    try {
+        await Book.create(bookData);
+        res.redirect('/books');
+    } catch (error) {
+        console.error('Book creation error:', error);
+        res.status(500).render('addbook', {
+            error: 'Could not add the book. Please try again.',
+            formData
+        });
+    }
 });
 
 app.get('/books/edit/:id', requireAdmin, async (req, res) => {
