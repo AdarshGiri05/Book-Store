@@ -66,28 +66,34 @@
                     </a>
 
     
-            <a href="/admin"
-               aria-label="Admin"
-               title="Admin"
-               class="inline-flex items-center hover:text-blue-100">
+            <% if (typeof isAdmin !== 'undefined' && isAdmin) { %>
+                <form action="/admin/logout" method="POST">
+                    <button type="submit" class="nav-link hover:text-blue-100">Admin Logout</button>
+                </form>
+            <% } else { %>
+                <a href="/admin"
+                   aria-label="Admin"
+                   title="Admin"
+                   class="inline-flex items-center hover:text-blue-100">
 
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="h-6 w-6"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="1.8"
-                     stroke-linecap="round"
-                     stroke-linejoin="round"
-                     aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-6 w-6"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round"
+                         aria-hidden="true">
 
-                    <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"></path>
+                        <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"></path>
 
-                    <circle cx="12" cy="10" r="2.5"></circle>
+                        <circle cx="12" cy="10" r="2.5"></circle>
 
-                    <path d="M8.5 16c.8-1.5 2-2.2 3.5-2.2s2.7.7 3.5 2.2"></path>
-                </svg>
-            </a>
+                        <path d="M8.5 16c.8-1.5 2-2.2 3.5-2.2s2.7.7 3.5 2.2"></path>
+                    </svg>
+                </a>
+            <% } %>
 
         </div>
     </div>

@@ -7,10 +7,12 @@ const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const ADMIN_USERNAME = "admin";
 const ADMIN_PASSWORD = "1234";
+const SESSION_SECRET = process.env.SESSION_SECRET || require('node:crypto').randomBytes(48).toString('hex');
 
 const mongoose = require('mongoose');
 const nodemailer = require('nodemailer');
 const multer = require('multer');
+const session = require('express-session');
 
 async function main() {
     await mongoose.connect
@@ -73,8 +75,36 @@ const escapeHtml = (value = '') => String(value)
 
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
+app.use(session({
+    name: 'bookstore.sid',
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 8 * 60 * 60 * 1000
+    }
+}));
+app.use((req, res, next) => {
+    res.locals.isAdmin = req.session.admin?.role === 'admin';
+    next();
+});
+
+const requireAdmin = (req, res, next) => {
+    if (req.session.admin?.role !== 'admin') {
+        return res.status(403).send('Administrator access required.');
+    }
+
+    next();
+};
 
 app.get('/admin', (req, res) => {
+    if (req.session.admin?.role === 'admin') {
+        return res.redirect('/books');
+    }
+
     res.render('adminlogin', { error: null });
 });
 
@@ -94,7 +124,37 @@ app.post('/admin/login', (req, res) => {
         });
     }
 
-    res.redirect('/books');
+    req.session.regenerate((error) => {
+        if (error) {
+            console.error('Admin session creation error:', error);
+            return res.status(500).send('Could not start an administrator session.');
+        }
+
+        req.session.admin = { role: 'admin' };
+        req.session.save((saveError) => {
+            if (saveError) {
+                console.error('Admin session save error:', saveError);
+                return res.status(500).send('Could not start an administrator session.');
+            }
+
+            res.redirect('/books');
+        });
+    });
+});
+
+app.post('/admin/logout', requireAdmin, (req, res, next) => {
+    req.session.destroy((error) => {
+        if (error) {
+            return next(error);
+        }
+
+        res.clearCookie('bookstore.sid', {
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: process.env.NODE_ENV === 'production'
+        });
+        res.redirect('/books');
+    });
 });
 
 const transport = nodemailer.createTransport({
@@ -117,7 +177,10 @@ app.get('/books', async (req, res) => {
 
         console.log("Total books found:", books.length);
 
-        res.render('books', { books });
+        res.render('books', {
+            books,
+            isAdmin: req.session.admin?.role === 'admin'
+        });
     } catch (err) {
         console.error("Books fetch error:", err);
         res.status(500).send("Error fetching books");
@@ -131,13 +194,14 @@ app.get('/books/add-to-cart/:id', async (req, res) => {
         return res.redirect('/books');
     }
 
+    const quantity = Math.max(1, Number.parseInt(req.query.qty, 10) || 1);
     const cartItems = app.locals.cart || [];
     const existingItem = cartItems.find(item => item._id.toString() === book._id.toString());
 
     if (existingItem) {
-        existingItem.quantity += 1;
+        existingItem.quantity += quantity;
     } else {
-        cartItems.push({ ...book.toObject(), quantity: 1 });
+        cartItems.push({ ...book.toObject(), quantity });
     }
 
     app.locals.cart = cartItems;
@@ -157,6 +221,19 @@ app.get('/cart/remove/:id', (req, res) => {
     res.redirect('/cart');
 });
 
+app.get('/cart/increase/:id', (req, res) => {
+    const cartItems = app.locals.cart || [];
+    const item = cartItems.find(book => book._id.toString() === req.params.id);
+
+    if (!item) {
+        return res.redirect('/cart');
+    }
+
+    item.quantity += 1;
+    app.locals.cart = cartItems;
+    res.redirect('/cart');
+});
+
 app.get('/cart/decrease/:id', (req, res) => {
     const cartItems = app.locals.cart || [];
     const item = cartItems.find(book => book._id.toString() === req.params.id);
@@ -169,13 +246,14 @@ app.get('/cart/decrease/:id', (req, res) => {
         item.quantity -= 1;
     } else {
         app.locals.cart = cartItems.filter(book => book._id.toString() !== req.params.id);
+        return res.redirect('/cart');
     }
 
     app.locals.cart = cartItems;
     res.redirect('/cart');
 });
 
-app.get('/books/edit/:id', async (req, res) => {
+app.get('/books/edit/:id', requireAdmin, async (req, res) => {
     const book = await Book.findById(req.params.id);
     if (!book) {
         return res.redirect('/books');
@@ -184,7 +262,7 @@ app.get('/books/edit/:id', async (req, res) => {
     res.render('editbook', { book });
 });
 
-app.post('/books/edit/:id', upload.single('imageFile'), async (req, res) => {
+app.post('/books/edit/:id', requireAdmin, upload.single('imageFile'), async (req, res) => {
     const body = req.body || {};
     const { name, title, author, price, category, image } = body;
 
@@ -308,8 +386,12 @@ app.post('/contact', (req, res) => {
     });
 });
 
-app.post('/books/delete/:id', async (req, res) => {
-    const bookId = req.params.id;
-    await Book.findByIdAndDelete(bookId);
-    res.redirect('/books');
+app.post('/books/delete/:id', requireAdmin, async (req, res) => {
+    try {
+        await Book.findByIdAndDelete(req.params.id);
+        res.redirect('/books');
+    } catch (error) {
+        console.error('Book delete error:', error);
+        res.status(500).send('Error deleting book');
+    }
 });

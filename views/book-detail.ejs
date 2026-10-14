@@ -44,9 +44,18 @@
                     </div>
 
                     <div class="mt-8 flex flex-col sm:flex-row gap-3">
-                        <a href="/books/add-to-cart/<%= book._id %>" class="flex-1 text-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-5 rounded-lg transition">
-                            Add to Cart
-                        </a>
+                        <form action="/books/add-to-cart/<%= book._id %>" method="GET" class="flex flex-1 items-center gap-2">
+                            <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-white">
+                                <button type="button" class="qty-btn px-3 py-3 text-lg font-semibold text-gray-700 hover:bg-gray-100" data-action="decrease" data-target="detail-qty-<%= book._id %>">−</button>
+                                <input id="detail-qty-<%= book._id %>" name="qty" type="number" min="1" value="1" class="w-14 border-0 bg-transparent text-center text-gray-800 font-semibold focus:outline-none">
+                                <button type="button" class="qty-btn px-3 py-3 text-lg font-semibold text-gray-700 hover:bg-gray-100" data-action="increase" data-target="detail-qty-<%= book._id %>">+</button>
+                            </div>
+
+                            <button type="submit" class="flex-1 text-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-5 rounded-lg transition">
+                                Add to Cart
+                            </button>
+                        </form>
+
                         <a href="/books/edit/<%= book._id %>" class="flex-1 text-center border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white font-semibold py-3 px-5 rounded-lg transition">
                             Edit Book
                         </a>
@@ -73,5 +82,18 @@
     </main>
 
     <%- include('includes/footer.ejs') %>
+
+    <script>
+        document.querySelectorAll('.qty-btn').forEach((button) => {
+            button.addEventListener('click', () => {
+                const input = document.getElementById(button.dataset.target);
+                if (!input) return;
+
+                const currentValue = Number.parseInt(input.value, 10) || 1;
+                const nextValue = button.dataset.action === 'increase' ? currentValue + 1 : Math.max(1, currentValue - 1);
+                input.value = nextValue;
+            });
+        });
+    </script>
 </body>
 </html>
