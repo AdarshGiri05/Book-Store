@@ -116,6 +116,14 @@
                 </div>
             <% } %>
 
+            <% if (error) { %>
+    <div class="mb-7 max-w-4xl mx-auto rounded-xl border border-red-200 bg-red-50 p-4 text-center text-red-800" role="alert">
+        <p class="font-bold">Message could not be sent.</p>
+        <p class="mt-1 text-sm">
+            Please check the server logs. Your Gmail OAuth settings may be missing or invalid.
+        </p>
+    </div>
+           <% } %>
 
                    
                     </div>

@@ -1,3 +1,22 @@
+require('dotenv').config();
+
+const { google } = require('googleapis');
+const MailComposer = require('nodemailer/lib/mail-composer');
+
+const oauth2Client = new google.auth.OAuth2(
+    process.env.GMAIL_CLIENT_ID,
+    process.env.GMAIL_CLIENT_SECRET,
+    'https://developers.google.com/oauthplayground'
+);
+
+oauth2Client.setCredentials({
+    refresh_token: process.env.GMAIL_REFRESH_TOKEN
+});
+
+const gmail = google.gmail({
+    version: 'v1',
+    auth: oauth2Client
+});
 const dns = require('node:dns');
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 const path = require("path");
@@ -16,6 +35,7 @@ const multer = require('multer');
 const session = require('express-session');
 
 async function main() {
+    const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/bookstore';
     await mongoose.connect
     ('mongodb+srv://Adarshgiri05:Adarshgiri006@cluster0.eqiqtln.mongodb.net/bookstore?appName=Cluster0');
     console.log("DB Connected");
@@ -355,7 +375,7 @@ app.get('/contact',(req,res)=>{
     const error = req.query.error === '1';
     res.render('contact', { success, error });
 })
-app.post('/contact', (req, res) => {
+app.post('/contact', async (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
     const mobile = req.body.mob;
@@ -390,7 +410,21 @@ app.post('/contact', (req, res) => {
             cid: `book-${String(item._id)}`
         }));
 
-    transport.sendMail({
+    const missingGmailConfig = [
+        'GMAIL_CLIENT_ID',
+        'GMAIL_CLIENT_SECRET',
+        'GMAIL_REFRESH_TOKEN'
+    ].filter(key => !process.env[key]);
+
+    if (missingGmailConfig.length) {
+        console.error(
+            `Gmail API is not configured. Missing environment variables: ${missingGmailConfig.join(', ')}`
+        );
+        return res.redirect('/contact?error=1');
+    }
+
+    const mailOptions = {
+        from: 'adarshgiriag2006@gmail.com',
         to: 'adarshgiriag2006@gmail.com',
         subject: 'New Customer Message',
         html: `
@@ -399,14 +433,12 @@ app.post('/contact', (req, res) => {
                     <div style="background: linear-gradient(135deg, #202124, #3c4043); color: #fff; padding: 20px 24px; font-size: 24px; font-weight: 700;">
                         New Customer Message
                     </div>
-
                     <div style="padding: 22px 24px 8px;">
                         <div style="margin-bottom: 14px;"><strong>Name:</strong> ${escapeHtml(name)}</div>
                         <div style="margin-bottom: 14px;"><strong>Email:</strong> ${escapeHtml(email)}</div>
                         <div style="margin-bottom: 14px;"><strong>Mobile:</strong> ${escapeHtml(mobile)}</div>
                         <div style="margin-bottom: 18px;"><strong>Message:</strong> ${escapeHtml(message)}</div>
                     </div>
-
                     <div style="padding: 0 24px 24px;">
                         <div style="font-size: 18px; font-weight: 700; margin-bottom: 10px; color: #1f1f1f;">Books in Cart</div>
                         ${cartHtml}
@@ -415,15 +447,33 @@ app.post('/contact', (req, res) => {
             </div>
         `,
         attachments
-    }, (error, info) => {
-        if (error) {
-            console.log(error);
-            return res.redirect('/contact?error=1');
-        }
+    };
+
+    try {
+        const mail = new MailComposer(mailOptions);
+        const rawMessage = await new Promise((resolve, reject) => {
+            mail.compile().build((error, message) => {
+                if (error) return reject(error);
+                resolve(message);
+            });
+        });
+
+        await gmail.users.messages.send({
+            userId: 'me',
+            requestBody: {
+                raw: Buffer.from(rawMessage).toString('base64url')
+            }
+        });
 
         app.locals.cart = [];
         return res.redirect('/contact?success=1');
-    });
+    } catch (error) {
+        console.error(
+            'Gmail API error:',
+            error.response?.data || error.message
+        );
+        return res.redirect('/contact?error=1');
+    }
 });
 
 app.post('/books/delete/:id', requireAdmin, async (req, res) => {

@@ -1,7 +1,7 @@
 {
   "name": "book-store",
   "version": "1.0.0",
-  "description": "",
+  "description": "��#\u0000 \u0000B\u0000o\u0000o\u0000k\u0000-\u0000S\u0000t\u0000o\u0000r\u0000e\u0000\r\u0000 \u0000",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,14 +11,24 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "dotenv": "^18.0.8",
     "ejs": "^6.0.1",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
+    "googleapis": "^185.0.0",
     "mongoose": "^9.9.1",
     "multer": "^2.4.0",
     "nodemailer": "^10.0.12"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdarshGiri05/Book-Store.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AdarshGiri05/Book-Store/issues"
+  },
+  "homepage": "https://github.com/AdarshGiri05/Book-Store#readme"
 }
